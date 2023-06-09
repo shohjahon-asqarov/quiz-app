@@ -1,16 +1,16 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Radio, Typography } from '@material-tailwind/react';
+import { Button, Card, CardBody, CardFooter, CardHeader, Progress, Radio, Spinner, Typography } from '@material-tailwind/react';
 import React, { useState } from 'react'
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Quiz({ questions, setResult }) {
 
 
     const navigate = useNavigate();
-    const [index, setIndex] = useState(0)
-    let currentQuestion = questions[index]
+    const [loading, setLoading] = useState(false);
+    const [index, setIndex] = useState(0);
+    let currentQuestion = questions[index];
 
     const answers = [...currentQuestion?.incorrect_answers];
-
 
     let num = Math.floor(Math.random() * 4);
     if (num === 3) {
@@ -20,8 +20,8 @@ function Quiz({ questions, setResult }) {
         answers[num] = currentQuestion?.correct_answer;
     }
 
-
     const NextQuestion = (e) => {
+        setLoading(true);
         setIndex((prevIndex) => {
             if (prevIndex === questions.length - 1) {
                 return questions.length - 1 & navigate('/result');
@@ -30,7 +30,12 @@ function Quiz({ questions, setResult }) {
             }
         });
         setResult(result => [...result, { question: currentQuestion.question, my_answer: e.target.value, answers: answers, correct_answer: currentQuestion.correct_answer }]);
-        e.checked = false
+        e.checked = false;
+
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000)
+
     }
 
     return (
@@ -54,23 +59,31 @@ function Quiz({ questions, setResult }) {
                 </CardHeader>
 
                 <CardBody>
-                    <Typography variant="paragraph">
-                        {index + 1} - {currentQuestion?.question}
-                    </Typography>
-                    <div data-aos="fade-left" className="grid gap-3 mt-5">
-                        {answers.map((i, index) => {
-                            return (
-                                <Radio value={i} onClick={(e) => NextQuestion(e)} className='radio' ripple={true} id="html" name="type" label={<Typography variant="small">{i}</Typography>} />
-                            )
-                        })}
-                    </div>
+                    {loading ?
+                        <div className='h-44 flex items-center'>
+                            <Spinner className="h-12 w-12 mx-auto" />
+                        </div>
+                        : <div className="div">
+                            <Typography variant="paragraph">
+                                {index + 1} - {currentQuestion?.question}
+                            </Typography>
+                            <div data-aos="fade-left" className="grid gap-3 mt-5">
+                                {answers.map((i, index) => {
+                                    return (
+                                        <Radio key={index} value={i} onClick={(e) => NextQuestion(e)} className='radio' ripple={true} id="html" name="type" label={<Typography variant="small">{i}</Typography>} />
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    }
                 </CardBody>
 
                 <CardFooter className="pt-3">
-                    <div className='gap-4 flex' fullWidth={true}>
-                        <Button onClick={()=>navigate('/')} fullWidth variant="outlined">Cancel</Button>
-                        <Button fullWidth variant="outlined">{index+1}/{questions.length}</Button>
+                    <div className='gap-4 flex'>
+                        <Button onClick={() => navigate('/')} fullWidth variant="outlined">Cancel</Button>
+                        <Button fullWidth variant="outlined">{index + 1}/{questions.length}</Button>
                     </div>
+                    <Progress className='mt-5 rounded-sm' value={((index + 1) / questions.length) * 100} />
                 </CardFooter>
             </Card>
         </div>

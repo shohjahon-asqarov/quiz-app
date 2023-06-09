@@ -1,4 +1,4 @@
-import { Input, Button, Card, CardBody, CardFooter, CardHeader, Chip, Dialog, List, ListItem, ListItemSuffix, Radio, Typography } from '@material-tailwind/react';
+import { Input, Button, Card, CardBody, CardFooter, CardHeader, Chip, Dialog, List, ListItem, ListItemSuffix, Typography } from '@material-tailwind/react';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ function Result({ result, setResult }) {
 
     const navigate = useNavigate()
     let nums = 0
-    const correct_answers = result.map(i => {
+    result.map(i => {
         if (i.correct_answer === i.my_answer) {
             nums += 1
         }

@@ -8,6 +8,7 @@ import {
     Typography,
     Select,
     Option,
+    Spinner,
 } from "@material-tailwind/react";
 import { Categories } from "../assets/data";
 import axios from "axios";
@@ -84,7 +85,7 @@ export default function Form({ questions, setQuestions }) {
 
                             <Select onChange={e => setcategory(e)} label="Select Category" menuProps={{ className: "h-48" }}>
                                 {Categories.map((category, index) => (
-                                    <Option key={index} value={category.key}>
+                                    <Option key={index} value={category.key.toString()}>
                                         {category.text}
                                     </Option>
                                 ))}
@@ -96,7 +97,7 @@ export default function Form({ questions, setQuestions }) {
 
                         </div>
                         <Button type="submit" size="lg" className="relative h-12">
-                            {loading ? 'Please wait...' : 'Start Quiz'}
+                            {loading ? <Spinner className="mx-auto" /> : 'Start Quiz'}
                         </Button>
                     </form>
                 </CardBody>
