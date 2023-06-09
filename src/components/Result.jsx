@@ -16,7 +16,7 @@ function Result({ result, setResult }) {
     let nums = 0
     result.map(i => {
         if (i.correct_answer === i.my_answer) {
-            nums += 1
+            return nums += 1
         }
     })
 
