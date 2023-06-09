@@ -34,7 +34,7 @@ function Quiz({ questions, setResult }) {
 
         setTimeout(() => {
             setLoading(false);
-        }, 1000)
+        }, 500)
 
     }
 

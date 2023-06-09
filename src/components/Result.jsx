@@ -13,12 +13,15 @@ function Result({ result, setResult }) {
     const handleOpen = () => setOpen((cur) => !cur);
 
     const navigate = useNavigate()
+
     let nums = 0
-    result.map(i => {
-        if (i.correct_answer === i.my_answer) {
-            return nums += 1
-        }
+    result.map((i) => {
+        return (
+            i.correct_answer === i.my_answer ? nums += 1 : null
+        )
     })
+
+
 
     const toHome = () => {
         navigate('/')
